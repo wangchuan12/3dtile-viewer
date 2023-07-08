@@ -48,18 +48,33 @@ function activate(context) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('3dtile-viewer.helloWorld', function (Uri) {
+	let disposable = vscode.commands.registerCommand('3dtile-viewer.helloWorld', function (uri) {
 		// The code you place here will be executed every time your command is executed
-		console.log(Uri)
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from 3dtile-viewer!');
+		console.log(uri)
+		let type = '3dtile'
+		if (uri.path.endsWith('.b3dm')) {
+			type = 'b3dm'
+		}
+
+		if (uri.path.endsWith('.i3dm')) {
+			type = 'i3dm'
+		}
+
+		if (uri.path.endsWith('.pnts')) {
+			type = 'pnts'
+		}
+
+		vscode.window.showInformationMessage(`Hello World from 3dtile-viewer! This is a ${type} file`)
 		const testDataUrl = panel.webview.asWebviewUri(
-			Uri
+			uri
 		) || panel.webview.asWebviewUri(
 			vscode.Uri.file(path.join(context.extensionPath , 'test' , '3dtile' ,'tileset.json'))
 		)
 		console.log(testDataUrl.toString())
-		panel.webview.postMessage({ url : testDataUrl.toString()});
+		panel.webview.postMessage({ 
+			url : testDataUrl.toString(),
+			type : type
+		});
 	});
 
 	const list = getFilesAndFoldersInDir(path.join(context.extensionPath , "dist" , "assets")).filter((item)=>{

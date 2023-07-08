@@ -1,6 +1,8 @@
 import { BoxGeometry, Mesh, MeshBasicMaterial } from "three";
 import Viewer from "./viewer";
 import TileRender from "./tile-render";
+import TileType from "../util/tile-type";
+import B3dmRender from "./b3dm-render";
 
 class ThreeMain{
     constructor(){
@@ -20,9 +22,22 @@ class ThreeMain{
             const div = document.createElement("div")
             div.innerHTML = e.data.url
             document.body.appendChild(div)
-            const tileRender = new TileRender(this.viewer.camera , this.viewer.renderer , e.data.url)
-            this.tileRender = tileRender
-            this.viewer.scene.add(tileRender)
+            switch(e.data.type){
+                case TileType["3DTILE"]:
+                    const tileRender = new TileRender(this.viewer.camera , this.viewer.renderer , e.data.url)
+                    this.tileRender = tileRender
+                    this.viewer.scene.add(tileRender)
+                    break
+                case TileType.B3DM:
+                    this.viewer.scene.add(
+                        new B3dmRender(e.data.url , this.viewer)
+                    )
+                    break
+                case TileType.I3DM:
+                    break
+                case TileType.PNTS:
+                    break
+            }
         })
     }
 

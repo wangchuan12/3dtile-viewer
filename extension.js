@@ -64,6 +64,10 @@ function activate(context) {
 			type = 'pnts'
 		}
 
+		if (uri.path.endsWith('.cmpt')) {
+			type = "cmpt"
+		}
+
 		vscode.window.showInformationMessage(`Hello World from 3dtile-viewer! This is a ${type} file`)
 		const testDataUrl = panel.webview.asWebviewUri(
 			uri

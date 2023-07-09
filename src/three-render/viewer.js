@@ -24,13 +24,31 @@ export default class Viewer {
         this.renderer.shadowMap.enabled = true;
         this.camera.rotation.order = "YXZ"
         this.el.appendChild(this.renderer.domElement)
-        this.scene.add(new THREE.AmbientLight())
+        this.initLight()
         window.addEventListener("reset" , ()=>{
           this.camera.aspect = this.el.clientWidth / this.el.clientHeight
           this.camera.updateProjectionMatrix()
           this.renderer.setSize(this.el.clientWidth, this.el.clientHeight)
         })
 
+    }
+
+    initLight(){
+        const dirLight = new THREE.DirectionalLight( 0xffffff, 1.25 );
+        dirLight.position.set( 1, 2, 3 ).multiplyScalar( 40 );
+        dirLight.castShadow = true;
+        dirLight.shadow.bias = - 0.01;
+        dirLight.shadow.mapSize.setScalar( 2048 );
+
+        const shadowCam = dirLight.shadow.camera;
+        shadowCam.left = - 200;
+        shadowCam.bottom = - 200;
+        shadowCam.right = 200;
+        shadowCam.top = 200;
+        shadowCam.updateProjectionMatrix();
+
+        this.scene.add( dirLight );
+        this.scene.add(new THREE.AmbientLight(0xffffff))
     }
 
     getObjectControl(){

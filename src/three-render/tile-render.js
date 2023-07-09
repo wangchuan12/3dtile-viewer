@@ -5,7 +5,6 @@ import { TilesRenderer , DebugTilesRenderer} from '3d-tiles-renderer';
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFCesiumRTCExtension } from '3d-tiles-renderer';
-import ThreeConvertTool from "./three-convert";
 import Viewer from "./viewer";
 
 export default class TileRender extends Object3D{

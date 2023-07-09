@@ -31,9 +31,6 @@ class ThreeMain{
 
     getVscodeData(){
         window.addEventListener("message" , (e)=>{
-            const div = document.createElement("div")
-            div.innerHTML = e.data.url
-            document.body.appendChild(div)
             switch(e.data.type){
                 case TileType["3DTILE"]:
                     const tileRender = new TileRender(this.viewer.camera , this.viewer.renderer , e.data.url , this.viewer)

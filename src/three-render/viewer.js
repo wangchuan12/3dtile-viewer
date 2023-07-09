@@ -137,6 +137,35 @@ export default class Viewer {
     getCameraPosition(){
       return this.camera.getWorldPosition(new THREE.Vector3())
     }
+
+    /**
+     * 计算相机所能看到的box的position 从上往下看
+     * @param {THREE.Box3} box 
+     */
+    setCameraPositionFromBox3(box){
+      const center = box.getCenter(new THREE.Vector3())
+      const size = box.getSize(new THREE.Vector3())
+      // 计算相机点与box的最小水平距离
+      const x = (2 * size.y) / Math.tan(this.camera.fov)
+      const position = center.clone().add(new THREE.Vector3(0 , x + size.y))
+      this.camera.position.copy(position)
+      this.control.target.copy(center)
+      this.camera.lookAt(center)
+    }
+
+    /**
+     * 
+     * @param {THREE.Sphere} sphere 
+     */
+    setCameraPositionFromSphere(sphere){
+      const center = sphere.center
+      const size = new THREE.Vector3(sphere.radius , sphere.radius , sphere.radius)
+      const x = (2 * size.y) / Math.tan(this.camera.fov)
+      const position = center.clone().add(new THREE.Vector3(0 , x + size.y))
+      this.camera.position.copy(position)
+      this.control.target.copy(center)
+      this.camera.lookAt(center)
+    }
     
     destroy(){
       this.el && this.el.removeChild(this.renderer.domElement)

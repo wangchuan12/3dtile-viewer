@@ -21,12 +21,7 @@ export default class B3dmRender extends Object3D{
             this.add(res.scene)
             const box = new Box3()
             box.expandByObject(res.scene)
-            const center = box.getCenter(new Vector3())
-            const lookPosition = center.clone()
-            center.y += 50
-            this.viewer.camera.position.copy(center)
-            this.viewer.control.target.copy(lookPosition)
-            this.viewer.camera.lookAt(lookPosition)
+            this.viewer.setCameraPositionFromBox3(box)
         })
     }
 

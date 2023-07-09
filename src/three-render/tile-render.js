@@ -1,4 +1,4 @@
-import { MathUtils, Matrix4, Vector3, WebGLRenderer } from "three";
+import { Box3, MathUtils, Matrix4, Sphere, Vector3, WebGLRenderer } from "three";
 import { PerspectiveCamera } from "three";
 import { Object3D } from "three";
 import { TilesRenderer , DebugTilesRenderer} from '3d-tiles-renderer';
@@ -6,18 +6,22 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFCesiumRTCExtension } from '3d-tiles-renderer';
 import ThreeConvertTool from "./three-convert";
+import Viewer from "./viewer";
 
 export default class TileRender extends Object3D{
     /**
      * 
      * @param {PerspectiveCamera} camera 
      * @param {WebGLRenderer} renderer 
+     * @param {string} url
+     * @param {Viewer} viewer  
      */
-    constructor(camera , renderer , url){
+    constructor(camera , renderer , url , viewer){
         super()
         this.camera = camera
         this.renderer = renderer
         this.url = url
+        this.viewer = viewer
         this.init()
     }
 
@@ -28,12 +32,6 @@ export default class TileRender extends Object3D{
         // "https://file%2B.vscode-resource.vscode-cdn.net/c%3A/Users/cxx13/Desktop/open/geo-3dtile-for-vscode/3dtile-viewer/test/3dtile/tileset.json"//window.dataUrl || "https://home.smart3d.cn/viewer/Smart3DDatas/3DTiles/ZJTelecom/3dtiles.json"
         const tilesRenderer = new TilesRenderer(data );
         this.tilesRenderer = tilesRenderer
-        // @ts-ignore
-       // console.log(dataUrl)
-        // const tem =  new Vector3( -2759577.012709694,4771161.978994008,3198855.534166248)
-        // const mat = ThreeConvertTool.toThreeMat(tem)
-        // const roate = new Matrix4().makeRotationX(MathUtils.degToRad(-90)).multiply(mat)
-        // roate.decompose(tilesRenderer.group.position , tilesRenderer.group.quaternion , tilesRenderer.group.scale)
         tilesRenderer.setCamera( this.camera );
         tilesRenderer.setResolutionFromRenderer( this.camera , this.renderer);
         const dracoLoader = new DRACOLoader();
@@ -45,6 +43,30 @@ export default class TileRender extends Object3D{
         tilesRenderer.manager.addHandler(/(\.gltf|\.glb)$/, loader);
         // @ts-ignore
         this.add(tilesRenderer.group)
+        this.adjustCameraPosition()
+    }
+
+    async adjustCameraPosition(){
+        const data = await fetch(this.url)
+        const json = await data.json()
+        const boundingVolume = json.root.boundingVolume
+        if (boundingVolume.sphere) {
+            this.viewer.setCameraPositionFromSphere(new Sphere(
+                new Vector3(boundingVolume.sphere[0] , boundingVolume.sphere[1] , boundingVolume.sphere[2]),
+                boundingVolume.sphere[3]
+            ))
+        }
+
+        if (boundingVolume.box) {
+            const ve = new Vector3(boundingVolume.box[3] ,boundingVolume.box[7], boundingVolume.box[11])
+            this.viewer.setCameraPositionFromBox3(
+                new Box3(ve.clone().negate() , ve).translate(new Vector3(
+                    boundingVolume.box[0],
+                    boundingVolume.box[1],
+                    boundingVolume.box[2]
+                ))
+            )
+        }
     }
 
     update(){

@@ -46,11 +46,30 @@ function activate(context) {
 
 	let isDispose = true
 	let panel;
+	
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
 	// The commandId parameter must match the command field in package.json
 	let disposable = vscode.commands.registerCommand('3dtile-viewer.helloWorld', function (uri) {
+		console.log(uri)
+		let type = '3dtile'
+		if (uri.path.endsWith('.b3dm')) {
+			type = 'b3dm'
+		}
 
+		if (uri.path.endsWith('.i3dm')) {
+			type = 'i3dm'
+		}
+
+		if (uri.path.endsWith('.pnts')) {
+			type = 'pnts'
+		}
+
+		if (uri.path.endsWith('.cmpt')) {
+			type = "cmpt"
+		}
+
+		vscode.window.showInformationMessage(`Hello Visitor from 3dtile-viewer! This is a ${type} file`)
 		if (isDispose) {
 			panel = vscode.window.createWebviewPanel("webview" , "3dtile-viewer" , vscode.ViewColumn.One , {enableScripts : true, })
 			panel.onDidDispose(()=>{
@@ -90,26 +109,6 @@ function activate(context) {
 		if (!panel.visible) {
 			panel.reveal()
 		}
-		// The code you place here will be executed every time your command is executed
-		console.log(uri)
-		let type = '3dtile'
-		if (uri.path.endsWith('.b3dm')) {
-			type = 'b3dm'
-		}
-
-		if (uri.path.endsWith('.i3dm')) {
-			type = 'i3dm'
-		}
-
-		if (uri.path.endsWith('.pnts')) {
-			type = 'pnts'
-		}
-
-		if (uri.path.endsWith('.cmpt')) {
-			type = "cmpt"
-		}
-
-		vscode.window.showInformationMessage(`Hello World from 3dtile-viewer! This is a ${type} file`)
 		const testDataUrl = panel.webview.asWebviewUri(
 			uri
 		) || panel.webview.asWebviewUri(

@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import {FloatType , PMREMGenerator ,HalfFloatType  } from 'three' 
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
+import GUI from 'lil-gui'
 export default class Viewer {
     /**
      * 
@@ -24,17 +25,66 @@ export default class Viewer {
         this.renderer.shadowMap.enabled = true;
         this.camera.rotation.order = "YXZ"
         this.el.appendChild(this.renderer.domElement)
-        this.initLight()
         window.addEventListener("reset" , ()=>{
           this.camera.aspect = this.el.clientWidth / this.el.clientHeight
           this.camera.updateProjectionMatrix()
           this.renderer.setSize(this.el.clientWidth, this.el.clientHeight)
         })
 
+        this.createGui()
+        this.initLight()
+
     }
 
+    createGui(){
+      this.gui = new GUI()
+      const dirFolder = this.gui.addFolder("dirLight")
+      const param = this.param = {
+        dirColor : '#ffffff',
+        dirIntensity : 1.25,
+        dirX : 40,
+        dirY : 80,
+        dirZ : 120,
+        ambColor : '#ffffff',
+        ambIntensity : 1
+      }
+
+      dirFolder.addColor(param, "dirColor").onChange((e)=>{
+        console.log(e)
+        this.driLight.color.copy(new THREE.Color(e))
+      })
+
+      dirFolder.add(param , "dirIntensity" , 0 , 5 , 0.1).onChange((e)=>{
+        this.driLight.intensity = parseFloat(e)
+      })
+
+      dirFolder.add(param , "dirX")
+
+      dirFolder.add(param , "dirY")
+
+      dirFolder.add(param , "dirZ")
+
+      const ambientLightFolder = this.gui.addFolder('ambFolder')
+      ambientLightFolder.addColor(param, "ambColor").onChange((e)=>{
+        console.log(e)
+        this.ambientLight.color.copy(new THREE.Color(e))
+      })
+
+      ambientLightFolder.add(param , "ambIntensity" , 0 , 5 , 0.1).onChange((e)=>{
+        this.ambientLight.intensity = parseFloat(e)
+      })
+      
+
+      // div.style.position = "fixed"
+
+      // div.style.right = "10px"
+      // div.style.top = "10px"
+      // document.body.appendChild(div)
+      
+    }
     initLight(){
         const dirLight = new THREE.DirectionalLight( 0xffffff, 1.25 );
+        this.driLight = dirLight
         dirLight.position.set( 1, 2, 3 ).multiplyScalar( 40 );
         dirLight.castShadow = true;
         dirLight.shadow.bias = - 0.01;
@@ -48,7 +98,12 @@ export default class Viewer {
         shadowCam.updateProjectionMatrix();
 
         this.scene.add( dirLight );
-        this.scene.add(new THREE.AmbientLight(0xffffff))
+        this.ambientLight = new THREE.AmbientLight(0xffffff)
+        this.scene.add(this.ambientLight)
+
+        this.param.dirX = dirLight.position.x
+        this.param.dirY = dirLight.position.y
+        this.param.dirZ = dirLight.position.z
     }
 
     getObjectControl(){

@@ -17,12 +17,15 @@
 
 
 
-![image-20230709234539590](public/image-20230709234539590.png)
+![image-20230709234539590](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/image-20230709234539590.png)
 
-![image-20230709234603323](public/image-20230709234603323.png)
+![image-20230709234603323](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/image-20230709234603323.png)
 
-![image-20230709234629887](public/image-20230709234603323.png)
+![image-20230709234629887](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/image-20230709234653632.png)
 
-![image-20230709234653632](public/image-20230709234629887.png)
+![image-20230709234653632](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/image-20230709234629887.png)
 
-![image-20230709234731444](public/image-20230709234653632.png)
+![image-20230709234629887](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/image-20230709234731444.png)
+
+
+

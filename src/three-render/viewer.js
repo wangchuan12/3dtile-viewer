@@ -3,6 +3,7 @@ import {FloatType , PMREMGenerator ,HalfFloatType  } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import GUI from 'lil-gui'
+const raycaster = new THREE.Raycaster()
 export default class Viewer {
     /**
      * 
@@ -239,7 +240,52 @@ export default class Viewer {
       this.control.target.copy(center)
       this.camera.lookAt(center)
     }
+
+    /**
+     * 
+     * @param {THREE.Vector2} vec2 
+     */
+    pick(vec2){
+      raycaster.setFromCamera(vec2 , this.camera)
+
+      const intersects = raycaster.intersectObject(this.scene)
+
+      if ( intersects.length ) {
+
+        const { face, object } = intersects[ 0 ]
+        // @ts-ignore
+        const batchidAttr = object.geometry.getAttribute( '_batchid' );
+      
+        if ( batchidAttr ) {
+      
+          // Traverse the parents to find the batch table.
+          let batchTableObject = object;
+          // @ts-ignore
+          while ( ! batchTableObject.batchTable ) {
+      
+            batchTableObject = batchTableObject.parent;
+      
+          }
+      
+          // Log the batch data
+          // @ts-ignore
+          const batchTable = batchTableObject.batchTable;
+          const hoveredBatchid = batchidAttr.getX( face.a );
+          const data = {}
+          Object.keys(batchTable.header).forEach((item)=>{
+            data[item] = batchTable.getData(item)[hoveredBatchid]
+          })
+
+          return data
+      
+        }
+      
+      }
+
+      return {}
     
+    }
+
     destroy(){
       this.el && this.el.removeChild(this.renderer.domElement)
       this.renderer && this.renderer.dispose()

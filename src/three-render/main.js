@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, MeshBasicMaterial } from "three";
+import { BoxGeometry, Mesh, MeshBasicMaterial, Vector2 } from "three";
 import Viewer from "./viewer";
 import TileRender from "./tile-render";
 import TileType from "../util/tile-type";
@@ -15,6 +15,35 @@ class ThreeMain{
         this.viewer = new Viewer('three-con')
         this.viewer.init()
         this.viewer.getObjectControl()
+        this.initEvent()
+        // this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
+        this.contentDiv = document.createElement("div")
+        document.body.appendChild(this.contentDiv)
+        this.contentDiv.style.position = "fixed"
+        this.contentDiv.style.left = "10px"
+        this.contentDiv.style.top = "10px"
+        this.contentDiv.style.color = "white"
+        //https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm
+    }
+
+    _createContentEl(data){
+        let html = ``
+        Object.entries(data).forEach((item)=>{
+            html += `
+            <p>${item[0]} : ${item[1]}<p/>
+            `
+        })
+        this.contentDiv.innerHTML = html
+    }
+
+    initEvent(){
+        const pointer = new Vector2();
+        window.addEventListener( 'pointermove', (event)=>{
+            pointer.x = ( event.clientX / window.innerWidth ) * 2 - 1
+	        pointer.y = - ( event.clientY / window.innerHeight ) * 2 + 1
+            const data = this.viewer.pick(pointer)
+            this._createContentEl(data)
+        } )
     }
 
     /**
@@ -79,6 +108,10 @@ const dealMessage = (e)=>{
     main.dealMessage(e.data.type , e.data.url)
 }
 window.addEventListener("message" , (e)=>{
+    // 测试方法后续删除
+    // const div = document.createElement("div")
+    // div.innerHTML = `${e.data.url}`
+    // document.body.appendChild(div)
     dealMessage(e)
 })
 

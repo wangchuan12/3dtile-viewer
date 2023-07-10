@@ -45,7 +45,7 @@ function activate(context) {
 	})
 
 	let isDispose = true
-	let panel;
+	let panel
 	
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with  registerCommand
@@ -104,6 +104,21 @@ function activate(context) {
 				</body>
 				</html>
 			`;
+
+			// 做一点延时，等待资源加载
+			setTimeout(()=>{
+				const testDataUrl = panel.webview.asWebviewUri(
+					uri
+				) || panel.webview.asWebviewUri(
+					vscode.Uri.file(path.join(context.extensionPath , 'test' , '3dtile' ,'tileset.json'))
+				)
+				console.log(testDataUrl.toString())
+				panel.webview.postMessage({ 
+					url : testDataUrl.toString(),
+					type : type
+				});
+			},3000)
+			return 
 		}
 
 		if (!panel.visible) {

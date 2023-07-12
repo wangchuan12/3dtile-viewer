@@ -69,9 +69,12 @@ function activate(context) {
 			type = "cmpt"
 		}
 
+	 	const title =  uri.path.split("/").pop()
+
 		vscode.window.showInformationMessage(`Hello Visitor from 3dtile-viewer! This is a ${type} file`)
 		if (isDispose) {
 			panel = vscode.window.createWebviewPanel("webview" , "3dtile-viewer" , vscode.ViewColumn.One , {enableScripts : true, })
+			panel.title = title
 			panel.onDidDispose(()=>{
 				isDispose = true
 			})
@@ -134,6 +137,7 @@ function activate(context) {
 			url : testDataUrl.toString(),
 			type : type
 		});
+		panel.title = title
 	});
 	context.subscriptions.push(disposable);
 }

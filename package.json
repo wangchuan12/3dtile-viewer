@@ -54,6 +54,7 @@
   "dependencies": {
     "@vitejs/plugin-vue": "^4.2.3",
     "3d-tiles-renderer": "^0.3.20",
+    "cesium": "^1.107.0",
     "lil-gui": "^0.18.2",
     "three": "^0.154.0",
     "three-mesh-bvh": "^0.6.1",

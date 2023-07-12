@@ -1,9 +1,9 @@
-import { Box3, LoadingManager, Mesh, Object3D, ShaderLib, ShaderMaterial } from "three";
+import { Box3, LoadingManager, Mesh } from "three";
 import Viewer from "./viewer";
 import { PNTSLoader } from "3d-tiles-renderer";
-import getHightShader from "./hight-shader";
+import RenderBase from "./base/render-base";
 
-export default class PntsRender extends Object3D{
+export default class PntsRender extends RenderBase{
     /**
      * 
      * @param {string} url 

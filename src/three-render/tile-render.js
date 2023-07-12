@@ -1,14 +1,13 @@
-import { Box3, MathUtils, Matrix4, Mesh, ShaderLib, ShaderMaterial, Sphere, Vector3, WebGLRenderer } from "three";
+import { Box3, Mesh, Sphere, Vector3, WebGLRenderer } from "three";
 import { PerspectiveCamera } from "three";
-import { Object3D } from "three";
-import { TilesRenderer , DebugTilesRenderer} from '3d-tiles-renderer';
+import { TilesRenderer } from '3d-tiles-renderer';
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFCesiumRTCExtension } from '3d-tiles-renderer';
 import Viewer from "./viewer";
-import getHightShader from "./hight-shader";
+import RenderBase from "./base/render-base";
 
-export default class TileRender extends Object3D{
+export default class TileRender extends RenderBase{
     /**
      * 
      * @param {PerspectiveCamera} camera 

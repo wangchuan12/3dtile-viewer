@@ -1,9 +1,9 @@
 import { B3DMLoader } from "3d-tiles-renderer";
-import { Box3, LoadingManager, Mesh, Object3D, ShaderLib, ShaderMaterial, Vector3 } from "three";
+import { Box3, LoadingManager, Mesh } from "three";
 import Viewer from "./viewer";
-import getHightShader from "./hight-shader";
+import RenderBase from "./base/render-base";
 
-export default class B3dmRender extends Object3D{
+export default class B3dmRender extends RenderBase{
     /**
      * 
      * @param {string} url 

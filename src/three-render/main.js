@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, MeshBasicMaterial, Vector2 ,BufferGeometry} from "three";
+import { Mesh, Vector2 ,BufferGeometry} from "three";
 import Viewer from "./viewer";
 import TileRender from "./tile-render";
 import TileType from "../util/tile-type";
@@ -21,6 +21,7 @@ class ThreeMain{
         this.viewer.init()
         this.viewer.getObjectControl()
         this.initEvent()
+        this.currentRender = []
       //  this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
         this.contentDiv = document.createElement("div")
         document.body.appendChild(this.contentDiv)
@@ -57,33 +58,34 @@ class ThreeMain{
      * @param {string} url 
      */
     dealMessage(type , url){
+        this.removeAllRender()
+        let render
         switch(type){
             case TileType["3DTILE"]:
                 const tileRender = new TileRender(this.viewer.camera , this.viewer.renderer , url , this.viewer)
                 this.tileRender = tileRender
+                render = tileRender
                 this.viewer.scene.add(tileRender)
+                this.currentRender.push(tileRender)
                 break
             case TileType.B3DM:
-                this.viewer.scene.add(
-                    new B3dmRender(url , this.viewer)
-                )
+                render = new B3dmRender(url , this.viewer)
+                this.viewer.scene.add(render)
                 break
             case TileType.I3DM:
-                this.viewer.scene.add(
-                    new I3dmRender(url , this.viewer)
-                )
+                render = new I3dmRender(url , this.viewer)
+                this.viewer.scene.add(render)
                 break
             case TileType.PNTS:
-                this.viewer.scene.add(
-                    new PntsRender(url , this.viewer)
-                )
+                render = new PntsRender(url , this.viewer)
+                this.viewer.scene.add(render)
                 break
             case TileType.CMPT :
-                this.viewer.scene.add(
-                    new CmptRender(url , this.viewer)
-                )
+                render = new CmptRender(url , this.viewer)
+                this.viewer.scene.add(render)
                 break
         }
+        this.currentRender.push(render)
     }
 
     update(){
@@ -94,6 +96,19 @@ class ThreeMain{
     render(){
         this.viewer.renderer.render(this.viewer.scene , this.viewer.camera)
     }
+
+    removeAllRender(){
+        this.currentRender.forEach((item)=>{
+            this.viewer.scene.remove(item)
+            item.destroy()
+        })
+
+        this.currentRender = []
+        
+        this.tileRender = null
+    }
+
+    destroy(){}
 
     startLoop(){
         this.update()

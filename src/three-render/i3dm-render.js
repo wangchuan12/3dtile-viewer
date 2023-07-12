@@ -2,8 +2,9 @@ import { Box3, LoadingManager, Object3D ,Mesh, ShaderLib, ShaderMaterial } from 
 import Viewer from "./viewer";
 import { I3DMLoader } from "3d-tiles-renderer";
 import getHightShader from "./hight-shader";
+import RenderBase from "./base/render-base";
 
-export default class I3dmRender extends Object3D{
+export default class I3dmRender extends RenderBase{
     /**
      * 
      * @param {string} url 
@@ -30,4 +31,5 @@ export default class I3dmRender extends Object3D{
             this.viewer.setCameraPositionFromBox3(box)
         })
     }
+
 }

@@ -1,4 +1,4 @@
-import { BoxGeometry, Mesh, MeshBasicMaterial, Vector2 } from "three";
+import { BoxGeometry, Mesh, MeshBasicMaterial, Vector2 ,BufferGeometry} from "three";
 import Viewer from "./viewer";
 import TileRender from "./tile-render";
 import TileType from "../util/tile-type";
@@ -6,6 +6,11 @@ import B3dmRender from "./b3dm-render";
 import I3dmRender from "./i3dm-render";
 import PntsRender from "./pnts-render";
 import CmptRender from "./cmpt-render";
+import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh'
+
+BufferGeometry.prototype.computeBoundsTree = computeBoundsTree
+BufferGeometry.prototype.disposeBoundsTree = disposeBoundsTree
+Mesh.prototype.raycast = acceleratedRaycast
 
 class ThreeMain{
     constructor(){
@@ -16,7 +21,7 @@ class ThreeMain{
         this.viewer.init()
         this.viewer.getObjectControl()
         this.initEvent()
-        // this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
+      //  this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
         this.contentDiv = document.createElement("div")
         document.body.appendChild(this.contentDiv)
         this.contentDiv.style.position = "fixed"

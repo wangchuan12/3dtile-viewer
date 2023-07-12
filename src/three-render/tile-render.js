@@ -1,4 +1,4 @@
-import { Box3, MathUtils, Matrix4, Sphere, Vector3, WebGLRenderer } from "three";
+import { Box3, MathUtils, Matrix4, Mesh, ShaderLib, ShaderMaterial, Sphere, Vector3, WebGLRenderer } from "three";
 import { PerspectiveCamera } from "three";
 import { Object3D } from "three";
 import { TilesRenderer , DebugTilesRenderer} from '3d-tiles-renderer';
@@ -6,6 +6,7 @@ import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFCesiumRTCExtension } from '3d-tiles-renderer';
 import Viewer from "./viewer";
+import getHightShader from "./hight-shader";
 
 export default class TileRender extends Object3D{
     /**
@@ -40,6 +41,17 @@ export default class TileRender extends Object3D{
         loader.setDRACOLoader( dracoLoader );
         loader.register( () => new GLTFCesiumRTCExtension() );
         tilesRenderer.manager.addHandler(/(\.gltf|\.glb)$/, loader);
+        tilesRenderer.onLoadModel = (item)=>{
+            if (item instanceof Mesh) {
+                item.geometry.computeBoundsTree()
+            }
+        }
+
+        tilesRenderer.onDisposeModel = (item)=>{
+            if (item instanceof Mesh) {
+                item.geometry.disposeBoundsTree()
+            }
+        }
         // @ts-ignore
         this.add(tilesRenderer.group)
         this.adjustCameraPosition()

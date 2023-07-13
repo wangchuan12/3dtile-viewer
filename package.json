@@ -23,8 +23,10 @@
     "menus": {
       "explorer/context": [
         {
+          
           "command": "3dtile-viewer.helloWorld",
-          "group": "group1"
+          "group": "group1",
+          "when": "resourceExtname== '.json' || resourceExtname== '.b3dm' || resourceExtname== '.i3dm' || resourceExtname== '.pnts' || resourceExtname== '.cmpt'"
         }
       ]
     }

@@ -250,10 +250,10 @@ export default class Viewer {
 
       const intersects = raycaster.intersectObject(this.scene)
 
-      // if (this.currentHight) {
-      //   // @ts-ignore
-      //   this.currentHight.material.uniforms.highlightedBatchId.value = -1;
-      // }
+      if (this.currentHight) {
+        // @ts-ignore
+        this.currentHight.material.uniforms.highlightedBatchId.value = -1;
+      }
 
       if ( intersects.length ) {
 
@@ -271,68 +271,23 @@ export default class Viewer {
             batchTableObject = batchTableObject.parent;
       
           }
-          if (object instanceof THREE.Mesh) {
-            // console.log(object , intersects)
-            // console.log(this.getCameraPosition())
-            // const material = new THREE.MeshBasicMaterial({color : "red"})
-            // object.parent.add(
-            //   new THREE.Mesh(object.geometry, material)
-            // )
-          }
       
           // @ts-ignore
           const batchTable = batchTableObject.batchTable;
-          const hoveredBatchid = batchidAttr.getX( face.a );
-
-          // if (object instanceof THREE.Mesh) {
-          //   let left = face.a 
-          //   let right = face.a 
-          //   let isLeft = true
-          //   let isRight = true
-          //   while (isLeft || isRight) {
-          //     if (batchidAttr.array[left] !== hoveredBatchid) {
-          //       isLeft = false
-          //     } else {
-          //       left--
-          //     }
-  
-          //     if (batchidAttr.array[right] !== hoveredBatchid) {
-          //       isRight = false
-          //     } else {
-          //       right++
-          //     }
-          //   }
-  
-          //   left += 1
-          //   right -= 1
-  
-          //   console.log(left , right)
-  
-          //   const points = []
-          //   const datas = object.geometry.getAttribute( 'position' );
-          //   for(let i = left ; i < right ; i++) {
-          //     points.push(
-          //       datas.array[left],
-          //       datas.array[left  + 1],
-          //       datas.array[left + 2]
-          //     )
-          //     left += 3
-          //   }
-  
-          //   const geo = new THREE.BufferGeometry()
-          //   geo.setAttribute("position" , new THREE.BufferAttribute(new Float32Array(points) , 3))
-          //   object.parent.add(
-          //     new THREE.Mesh(
-          //       geo , new THREE.MeshBasicMaterial()
-          //     )
-          //   )
-          // }
+          const hoveredBatchid = batchidAttr.getX( face.a )
           // @ts-ignore
           console.log(batchTableObject.featureTable.getData("BATCH_LENGTH"))
 
+          if (hoveredBatchid !== null && hoveredBatchid !== undefined) {
+            // @ts-expect-error
+            object.material.uniforms.highlightedBatchId.value = hoveredBatchid
+          } else {
+            // @ts-expect-error
+            object.material.uniforms.highlightedBatchId.value = -1
+          }
 
           // object.material.uniforms.highlightedBatchId.value = hoveredBatchid;
-          // this.currentHight = object
+          this.currentHight = object
           const data = {}
           Object.keys(batchTable.header).forEach((item)=>{
             data[item] = batchTable.getData(item)[hoveredBatchid]

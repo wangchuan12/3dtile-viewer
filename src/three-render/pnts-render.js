@@ -2,6 +2,7 @@ import { Box3, LoadingManager, Mesh } from "three";
 import Viewer from "./viewer";
 import { PNTSLoader } from "3d-tiles-renderer";
 import RenderBase from "./base/render-base";
+import TileStanderMaterial from "./shader/tile-stander-material";
 
 export default class PntsRender extends RenderBase{
     /**
@@ -22,7 +23,7 @@ export default class PntsRender extends RenderBase{
             res.scene.traverse((item)=>{
                 if (item instanceof Mesh) {
                     item.geometry.computeBoundsTree()
-                   // item.material = new ShaderMaterial(getHightShader(ShaderLib.standard ) )
+                    item.material = TileStanderMaterial.getBathRenderMaterial(item.material)
                 }
             })
             this.add(res.scene)

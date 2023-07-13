@@ -6,6 +6,7 @@ import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { GLTFCesiumRTCExtension } from '3d-tiles-renderer';
 import Viewer from "./viewer";
 import RenderBase from "./base/render-base";
+import TileStanderMaterial from "./shader/tile-stander-material";
 
 export default class TileRender extends RenderBase{
     /**
@@ -43,6 +44,7 @@ export default class TileRender extends RenderBase{
         tilesRenderer.onLoadModel = (item)=>{
             if (item instanceof Mesh) {
                 item.geometry.computeBoundsTree()
+                item.material = TileStanderMaterial.getBathRenderMaterial(item.material)
             }
         }
 

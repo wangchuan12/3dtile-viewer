@@ -22,7 +22,7 @@ class ThreeMain{
         this.viewer.getObjectControl()
         this.initEvent()
         this.currentRender = []
-      //  this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
+        // this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
         this.contentDiv = document.createElement("div")
         document.body.appendChild(this.contentDiv)
         this.contentDiv.style.position = "fixed"

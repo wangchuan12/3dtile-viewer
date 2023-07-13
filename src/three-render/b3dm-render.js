@@ -1,7 +1,8 @@
 import { B3DMLoader } from "3d-tiles-renderer";
-import { Box3, LoadingManager, Mesh } from "three";
+import { Box3,LoadingManager, Mesh } from "three";
 import Viewer from "./viewer";
 import RenderBase from "./base/render-base";
+import TileStanderMaterial from "./shader/tile-stander-material";
 
 export default class B3dmRender extends RenderBase{
     /**
@@ -22,7 +23,7 @@ export default class B3dmRender extends RenderBase{
             res.scene.traverse((item)=>{
                 if (item instanceof Mesh) {
                     item.geometry.computeBoundsTree()
-                   // item.material = new ShaderMaterial(getHightShader(ShaderLib.standard ) )
+                    item.material = TileStanderMaterial.getBathRenderMaterial(item.material)
                 }
             })
             this.add(res.scene)

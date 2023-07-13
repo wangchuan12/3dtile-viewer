@@ -3,6 +3,7 @@ import Viewer from "./viewer";
 import { I3DMLoader } from "3d-tiles-renderer";
 import getHightShader from "./hight-shader";
 import RenderBase from "./base/render-base";
+import TileStanderMaterial from "./shader/tile-stander-material";
 
 export default class I3dmRender extends RenderBase{
     /**
@@ -23,7 +24,7 @@ export default class I3dmRender extends RenderBase{
             res.scene.traverse((item)=>{
                 if (item instanceof Mesh) {
                     item.geometry.computeBoundsTree()
-                   // item.material = new ShaderMaterial(getHightShader(ShaderLib.standard ) )
+                    item.material = TileStanderMaterial.getBathRenderMaterial(item.material)
                 }
             })
             this.add(res.scene)

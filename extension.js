@@ -79,6 +79,10 @@ function activate(context) {
 			) || panel.webview.asWebviewUri(
 				vscode.Uri.file(path.join(context.extensionPath , 'test' , '3dtile' ,'tileset.json'))
 			)
+			const dracoPath = panel.webview.asWebviewUri(
+				vscode.Uri.file(path.join(context.extensionPath, 'assets' , 'draco/' ,
+				))
+			)
 			console.log(testDataUrl.toString())
 			panel.webview.onDidReceiveMessage((message )=>{
 				if (message.command === 'webviewLoaded') {
@@ -106,10 +110,6 @@ function activate(context) {
 				return item.name.includes('css')
 			  }).name))
 			)
-			const dracoPath = panel.webview.asWebviewUri(
-				vscode.Uri.file(path.join(context.extensionPath, 'assets' , 'draco/' ,
-				))
-			  )
 			panel.webview.html = `
 			<!DOCTYPE html>
 				<html lang="en">

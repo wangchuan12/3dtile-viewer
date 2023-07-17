@@ -91,7 +91,7 @@ function activate(context) {
 			  }).name))
 			)
 			const dracoPath = panel.webview.asWebviewUri(
-				vscode.Uri.file(path.join(context.extensionPath, 'src', 'assets' , 'draco/' ,
+				vscode.Uri.file(path.join(context.extensionPath, 'assets' , 'draco/' ,
 				))
 			  )
 			panel.webview.html = `

@@ -74,6 +74,22 @@ function activate(context) {
 		vscode.window.showInformationMessage(`Hello Visitor from 3dtile-viewer! This is a ${type} file`)
 		if (isDispose) {
 			panel = vscode.window.createWebviewPanel("webview" , "3dtile-viewer" , vscode.ViewColumn.One , {enableScripts : true, })
+			const testDataUrl = panel.webview.asWebviewUri(
+				uri
+			) || panel.webview.asWebviewUri(
+				vscode.Uri.file(path.join(context.extensionPath , 'test' , '3dtile' ,'tileset.json'))
+			)
+			console.log(testDataUrl.toString())
+			panel.webview.onDidReceiveMessage((message )=>{
+				if (message.command === 'webviewLoaded') {
+					console.log('webview 加载完成')
+					panel.webview.postMessage({ 
+						url : testDataUrl.toString(),
+						dracoPath : dracoPath.toString(),
+						type : type
+					})
+				}
+			})
 			panel.title = title
 			panel.onDidDispose(()=>{
 				isDispose = true
@@ -104,6 +120,12 @@ function activate(context) {
 					<title>Vite + Vue</title>
 				</head>
 				<body>
+				    <script>
+					var vscode = acquireVsCodeApi();
+					vscode.postMessage({
+						command : 'webviewLoaded'
+					})
+					</script>
 					<div id="app"></div>
 					<script type="module" crossorigin src=${bundleScriptPathJs}></script>
 					<link rel="stylesheet" href=${bundleScriptPathCss}>
@@ -112,21 +134,6 @@ function activate(context) {
 			`;
 
 			console.log(dracoPath.toString())
-
-			// 做一点延时，等待资源加载
-			setTimeout(()=>{
-				const testDataUrl = panel.webview.asWebviewUri(
-					uri
-				) || panel.webview.asWebviewUri(
-					vscode.Uri.file(path.join(context.extensionPath , 'test' , '3dtile' ,'tileset.json'))
-				)
-				console.log(testDataUrl.toString())
-				panel.webview.postMessage({ 
-					url : testDataUrl.toString(),
-					dracoPath : dracoPath.toString(),
-					type : type
-				});
-			},3000)
 			return 
 		}
 

@@ -2,12 +2,9 @@ import { Box3, Mesh, Sphere, Vector3, WebGLRenderer } from "three";
 import { PerspectiveCamera } from "three";
 import { TilesRenderer } from '3d-tiles-renderer';
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
-import { GLTFCesiumRTCExtension } from '3d-tiles-renderer';
 import Viewer from "./viewer";
 import RenderBase from "./base/render-base";
 import TileStanderMaterial from "./shader/tile-stander-material";
-
 export default class TileRender extends RenderBase{
     /**
      * 
@@ -37,9 +34,8 @@ export default class TileRender extends RenderBase{
         const dracoLoader = new DRACOLoader();
         tilesRenderer.displayActiveTiles = true
         dracoLoader.setDecoderPath( '/draco/' );
-        const loader = new GLTFLoader(tilesRenderer.manager);
-        loader.setDRACOLoader( dracoLoader );
-        loader.register( () => new GLTFCesiumRTCExtension() );
+        const loader = this.getGltFDracoLoader(window["dracoPath"])
+        loader.manager = tilesRenderer.manager
         tilesRenderer.manager.addHandler(/(\.gltf|\.glb)$/, loader);
         tilesRenderer.onLoadModel = (item)=>{
             if (item instanceof Mesh) {
@@ -70,13 +66,25 @@ export default class TileRender extends RenderBase{
         }
 
         if (boundingVolume.box) {
-            const ve = new Vector3(boundingVolume.box[3] ,boundingVolume.box[7], boundingVolume.box[11])
-            this.viewer.setCameraPositionFromBox3(
+            const _vecX = new Vector3()
+            const _vecY = new Vector3()
+            const _vecZ = new Vector3()
+            _vecX.set( boundingVolume.box[ 3 ], boundingVolume.box[ 4 ], boundingVolume.box[ 5 ] )
+            _vecY.set( boundingVolume.box[ 6 ], boundingVolume.box[ 7 ], boundingVolume.box[ 8 ] )
+            _vecZ.set( boundingVolume.box[ 9 ], boundingVolume.box[ 10 ], boundingVolume.box[ 11 ] )
+    
+            const scaleX = _vecX.length()
+            const scaleY = _vecY.length()
+            const scaleZ = _vecZ.length()
+
+            const ve = new Vector3(scaleX ,scaleY, scaleZ)
+
+            this.viewer.setCameraPositionFromSphere(
                 new Box3(ve.clone().negate() , ve).translate(new Vector3(
                     boundingVolume.box[0],
                     boundingVolume.box[1],
                     boundingVolume.box[2]
-                ))
+                )).getBoundingSphere(new Sphere())
             )
         }
     }

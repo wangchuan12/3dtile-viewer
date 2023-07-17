@@ -19,7 +19,8 @@ export default class I3dmRender extends RenderBase{
     }
 
     init(){
-        const loader = new I3DMLoader(new LoadingManager())
+        const manager = this.getGltFDracoLoaderManager(window["dracoPath"])
+        const loader = new I3DMLoader(manager)
         loader.load(this.url).then((res)=>{
             res.scene.traverse((item)=>{
                 if (item instanceof Mesh) {

@@ -18,7 +18,8 @@ export default class PntsRender extends RenderBase{
     }
 
     init(){
-        const loader = new PNTSLoader(new LoadingManager())
+        const manager = this.getGltFDracoLoaderManager(window["dracoPath"])
+        const loader = new PNTSLoader(manager)
         loader.load(this.url).then((res)=>{
             res.scene.traverse((item)=>{
                 if (item instanceof Mesh) {

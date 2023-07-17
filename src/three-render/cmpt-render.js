@@ -18,7 +18,8 @@ export default class CmptRender extends RenderBase{
     }
 
     init(){
-        const loader = new CMPTLoader(new LoadingManager())
+        const manager = this.getGltFDracoLoaderManager(window["dracoPath"])
+        const loader = new CMPTLoader(manager)
 
         loader.load(this.url).then((res)=>{
             res.scene.traverse((item)=>{

@@ -22,7 +22,8 @@ class ThreeMain{
         this.viewer.getObjectControl()
         this.initEvent()
         this.currentRender = []
-        // this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
+        // window["dracoPath"] = "http://localhost:5174/modify/draco/"
+        // this.dealMessage("3dtile" , "http://localhost:5174/modify/3dtiles/3dtiles/tileset.json")
         this.contentDiv = document.createElement("div")
         document.body.appendChild(this.contentDiv)
         this.contentDiv.style.position = "fixed"
@@ -125,6 +126,7 @@ const dealMessage = (e)=>{
         },300)
     }
 
+    if (e.data.dracoPath) window["dracoPath"] = e.data.dracoPath
     main.dealMessage(e.data.type , e.data.url)
 }
 window.addEventListener("message" , (e)=>{

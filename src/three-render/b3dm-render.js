@@ -18,7 +18,8 @@ export default class B3dmRender extends RenderBase{
     }
 
     init(){
-        this.loader = new B3DMLoader(new LoadingManager())
+        const manager = this.getGltFDracoLoaderManager(window["dracoPath"])
+        this.loader = new B3DMLoader(manager)
         this.loader.load(this.url).then((res)=>{
             res.scene.traverse((item)=>{
                 if (item instanceof Mesh) {

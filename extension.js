@@ -90,7 +90,10 @@ function activate(context) {
 				return item.name.includes('css')
 			  }).name))
 			)
-
+			const dracoPath = panel.webview.asWebviewUri(
+				vscode.Uri.file(path.join(context.extensionPath, 'src', 'assets' , 'draco/' ,
+				))
+			  )
 			panel.webview.html = `
 			<!DOCTYPE html>
 				<html lang="en">
@@ -108,6 +111,8 @@ function activate(context) {
 				</html>
 			`;
 
+			console.log(dracoPath.toString())
+
 			// 做一点延时，等待资源加载
 			setTimeout(()=>{
 				const testDataUrl = panel.webview.asWebviewUri(
@@ -118,6 +123,7 @@ function activate(context) {
 				console.log(testDataUrl.toString())
 				panel.webview.postMessage({ 
 					url : testDataUrl.toString(),
+					dracoPath : dracoPath.toString(),
 					type : type
 				});
 			},3000)

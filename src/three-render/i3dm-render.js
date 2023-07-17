@@ -1,7 +1,6 @@
 import { Box3, LoadingManager, Object3D ,Mesh, ShaderLib, ShaderMaterial } from "three";
 import Viewer from "./viewer";
 import { I3DMLoader } from "3d-tiles-renderer";
-import getHightShader from "./hight-shader";
 import RenderBase from "./base/render-base";
 import TileStanderMaterial from "./shader/tile-stander-material";
 

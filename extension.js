@@ -122,9 +122,6 @@ function activate(context) {
 				<body>
 				    <script>
 					var vscode = acquireVsCodeApi();
-					vscode.postMessage({
-						command : 'webviewLoaded'
-					})
 					</script>
 					<div id="app"></div>
 					<script type="module" crossorigin src=${bundleScriptPathJs}></script>

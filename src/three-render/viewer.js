@@ -3,6 +3,7 @@ import {FloatType , PMREMGenerator ,HalfFloatType  } from 'three'
 import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 import GUI from 'lil-gui'
+import EventBus from '../util/event-bus'
 const raycaster = new THREE.Raycaster()
 export default class Viewer {
     /**
@@ -14,26 +15,27 @@ export default class Viewer {
     }
 
     init(){
-        this.el = document.getElementById(this.id)
-        this.camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.5, 10000  )
-        this.camera.position.set(0 , 5 , 5)
-        this.scene = new THREE.Scene()
-        this.clock = new THREE.Clock()
-        this.renderer = new THREE.WebGLRenderer( { antialias: true } );
-        this.renderer.setPixelRatio( window.devicePixelRatio );
-        this.renderer.setSize( window.innerWidth, window.innerHeight );
-        this.renderer.outputEncoding = THREE.sRGBEncoding;
-        this.renderer.shadowMap.enabled = true;
-        this.camera.rotation.order = "YXZ"
-        this.el.appendChild(this.renderer.domElement)
-        window.addEventListener("reset" , ()=>{
-          this.camera.aspect = this.el.clientWidth / this.el.clientHeight
-          this.camera.updateProjectionMatrix()
-          this.renderer.setSize(this.el.clientWidth, this.el.clientHeight)
-        })
+      this.eventBus = new EventBus()
+      this.el = document.getElementById(this.id)
+      this.camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.5, 10000  )
+      this.camera.position.set(0 , 5 , 5)
+      this.scene = new THREE.Scene()
+      this.clock = new THREE.Clock()
+      this.renderer = new THREE.WebGLRenderer( { antialias: true } );
+      this.renderer.setPixelRatio( window.devicePixelRatio );
+      this.renderer.setSize( window.innerWidth, window.innerHeight );
+      this.renderer.outputEncoding = THREE.sRGBEncoding;
+      this.renderer.shadowMap.enabled = true;
+      this.camera.rotation.order = "YXZ"
+      this.el.appendChild(this.renderer.domElement)
+      window.addEventListener("reset" , ()=>{
+        this.camera.aspect = this.el.clientWidth / this.el.clientHeight
+        this.camera.updateProjectionMatrix()
+        this.renderer.setSize(this.el.clientWidth, this.el.clientHeight)
+      })
 
-        this.createGui()
-        this.initLight()
+      this.createGui()
+      this.initLight()
 
     }
 
@@ -276,7 +278,7 @@ export default class Viewer {
           const batchTable = batchTableObject.batchTable;
           const hoveredBatchid = batchidAttr.getX( face.a )
           // @ts-ignore
-          console.log(batchTableObject.featureTable.getData("BATCH_LENGTH"))
+          console.log(hoveredBatchid)
 
           if (hoveredBatchid !== null && hoveredBatchid !== undefined) {
             // @ts-expect-error

@@ -24,6 +24,9 @@ class ThreeMain{
         this.currentRender = []
         // window["dracoPath"] = "http://localhost:5174/modify/draco/"
         // this.dealMessage("3dtile" , "http://localhost:5174/modify/3dtiles/3dtiles/tileset.json")
+       
+        // this.dealMessage("cmpt" , " /NoLod_74.cmpt")
+        // this.dealMessage("b3dm" , "https://raw.githubusercontent.com/CesiumGS/3d-tiles-samples/main/1.0/TilesetWithRequestVolume/city/lr.b3dm")
         this.contentDiv = document.createElement("div")
         document.body.appendChild(this.contentDiv)
         this.contentDiv.style.position = "fixed"
@@ -141,6 +144,10 @@ const run = ()=>{
     main = new ThreeMain()
     main.init()
     main.startLoop()
+    // @ts-ignore
+    vscode.postMessage({
+        command : 'webviewLoaded'
+    })
     return main
 }
 export default run

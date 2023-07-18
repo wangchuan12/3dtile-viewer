@@ -31,6 +31,10 @@ export default class B3dmRender extends RenderBase{
             const box = new Box3()
             box.expandByObject(res.scene)
             this.viewer.setCameraPositionFromBox3(box)
+            this.viewer.eventBus.emit("modeLoad" , {
+                featureTable : this.featureTableToPlane(res.featureTable),
+                batchTable : this.batchTableToPlane(res.batchTable)
+            })
         })
     }
 

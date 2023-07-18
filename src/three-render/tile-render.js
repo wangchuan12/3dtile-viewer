@@ -52,6 +52,10 @@ export default class TileRender extends RenderBase{
         // @ts-ignore
         this.add(tilesRenderer.group)
         this.adjustCameraPosition()
+        this.viewer.eventBus.emit("modeLoad" , {
+            featureTable : null,
+            batchTable : null
+        })
     }
 
     async adjustCameraPosition(){

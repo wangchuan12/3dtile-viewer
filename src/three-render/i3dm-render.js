@@ -30,6 +30,10 @@ export default class I3dmRender extends RenderBase{
             this.add(res.scene)
             const box = new Box3().expandByObject(res.scene)
             this.viewer.setCameraPositionFromBox3(box)
+            this.viewer.eventBus.emit("modeLoad" , {
+                featureTable : this.featureTableToPlane(res.featureTable),
+                batchTable : this.batchTableToPlane(res.batchTable)
+            })
         })
     }
 

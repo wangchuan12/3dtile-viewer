@@ -15,7 +15,7 @@
 
 ## Screenshot
 
-
+![image-20230709234539590](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/featureTable.png)
 
 ![image-20230709234539590](https://raw.githubusercontent.com/wangchuan12/3dtile-viewer/main/public/image-20230709234539590.png)
 

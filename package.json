@@ -2,7 +2,7 @@
   "name": "3dtile-viewer",
   "displayName": "3dtile-viewer",
   "description": "3DTile-Viewer is a tool for viewing 3dtile data in the vscode editor. The data formats you can view are.json,.pnts,.b3dm,.i3dm,.cmpt.",
-  "version": "0.0.7",
+  "version": "0.0.9",
   "engines": {
     "vscode": "^1.80.0"
   },

@@ -9,10 +9,19 @@ const props = defineProps({
     initLeft : String,
     initTop : String
 })
+const emit = defineEmits(["mini", "close"])
+const mini = ()=>{
+    emit("mini")
+}
+
+const close = ()=>{
+    emit("close")
+}
+
 console.log(props.headers , props.data , props.length)
 </script>
 <template>
-    <MoveBox :init-left="initLeft" :init-top="initTop">
+    <MoveBox :init-left="initLeft" :init-top="initTop" @mini="mini" @close="close">
         <div class = "table">
             <h1 class="table-name">{{name}}</h1>
             <div class="header">
@@ -43,6 +52,10 @@ console.log(props.headers , props.data , props.length)
     
 }
 
+h1{
+    width: 100%;
+    text-align: center;
+}
 .header{
     display: flex;
     flex-direction: row;
@@ -62,6 +75,8 @@ console.log(props.headers , props.data , props.length)
     flex-direction: column;
     min-width: 500px;
     min-height: 100px;
+    max-height: 500px;
+    overflow-y: auto;
 }
 .body-row-item , .header-item{
     width: var(--item-width);

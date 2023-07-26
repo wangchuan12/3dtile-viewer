@@ -42,11 +42,51 @@ onMounted(()=>{
     }
   })
 })
+
+const mini = (e)=>{
+  switch(e) {
+    case 'batchTable':
+      break
+    case 'featureTable':
+      break
+  }
+}
+
+const close = (e)=>{
+  switch(e) {
+    case 'batchTable':
+      batchTable.value.show = false
+      break
+    case 'featureTable':
+      featureTable.value.show = false
+      break
+  }
+}
 </script>
 
 <template>
-  <Table :headers="featureTable.header" :data="featureTable.data" :length="featureTable.length" :name="featureTable.name" v-if="featureTable.show" :init-left="'10px'" :init-top="'50px'"></Table>
-  <Table :headers="batchTable.header" :data="batchTable.data" :length="batchTable.length" :name="batchTable.name" v-if="batchTable.show" :init-left="'10px'" :init-top="'290px'"></Table>
+  <Table 
+  :headers="featureTable.header" 
+  :data="featureTable.data" 
+  :length="featureTable.length" 
+  :name="featureTable.name" 
+  v-if="featureTable.show" 
+  :init-left="'10px'" 
+  :init-top="'50px'"
+  @mini="mini('featureTable')"
+  @close="close('featureTable')"
+  ></Table>
+  <Table 
+  :headers="batchTable.header" 
+  :data="batchTable.data" 
+  :length="batchTable.length" 
+  :name="batchTable.name" 
+  v-if="batchTable.show" 
+  :init-left="'10px'" 
+  :init-top="'290px'"
+  @mini="mini('batchTable')"
+  @close="close('batchTable')"
+  ></Table>
   <div id="three-con"></div>
 </template>
 
